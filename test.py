@@ -63,6 +63,9 @@ class MetricsTaskSet(TaskSet):
     def guest_page(self):
         self.client.get('/f/u27l1s1000/normal/render.uP')
 
+    @task(5)
+    def get_login_page(self):
+        self.client.get('/openid_connect_login')
 
 class MetricsLocust(HttpLocust):
     task_set = MetricsTaskSet
