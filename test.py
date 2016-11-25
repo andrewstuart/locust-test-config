@@ -47,6 +47,10 @@ class MetricsTaskSet(TaskSet):
     def portlet_list(self):
         self.client.get('/api/portletListForSearch')
 
+    @task(1)
+    def moar_list(self):
+        self.client.get('/api/portletListForSearch/')
+
     # @task
     # def rest_stories(self):
     #     self.client.get('/f/u27l1s1000/p/cvc.u27l1n22101/exclusive/render.uP')
