@@ -43,7 +43,7 @@ class MetricsTaskSet(TaskSet):
     def main(self):
         self.client.get('/api/version/')
 
-    @task(1)
+    @task(10)
     def portlet_list(self):
         self.client.get('/api/portletListForSearch')
 
