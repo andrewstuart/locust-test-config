@@ -57,9 +57,9 @@ class MetricsTaskSet(TaskSet):
     def main(self):
         self.auth_get('/api/version/')
 
-    @task(10)
-    def portlet_list(self):
-        self.auth_get('/api/portletListForSearch')
+    # @task(10)
+    # def portlet_list(self):
+    #     self.auth_get('/api/portletListForSearch')
 
     # @task
     # def rest_stories(self):
