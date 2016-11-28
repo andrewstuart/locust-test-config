@@ -1,7 +1,7 @@
 import uuid
 from locust import HttpLocust, TaskSet, task
 import time
-import jwt
+# import jwt
 
 def strTimeProp(start, end, format, prop):
     """Get a time at a proportion of a range of two formatted times.
@@ -32,18 +32,13 @@ class MetricsTaskSet(TaskSet):
     def auth_get(self, *args, **kwargs):
         if self.token is not None:
             try:
-                jwt.decode(self.token)
-
-                try:
-                    if kwargs['headers'] is None:
-                        kwargs['headers'] = {}
-                except KeyError:
+                if kwargs['headers'] is None:
                     kwargs['headers'] = {}
+            except KeyError:
+                kwargs['headers'] = {}
 
-                bearer = 'Bearer {}'.format(self.token)
-                kwargs['headers']['Authorization'] = bearer
-            except jwt.ExpiredSignatureError:
-                print("Proceeding with no token. Signature expired.")
+            bearer = 'Bearer {}'.format(self.token)
+            kwargs['headers']['Authorization'] = bearer
 
         self.client.get(*args, **kwargs)
 
@@ -51,7 +46,7 @@ class MetricsTaskSet(TaskSet):
         self._deviceid = str(uuid.uuid4())
         self.client.verify = False
 
-        self.token = "eyJraWQiOiJyc2ExIiwiYWxnIjoiUlMyNTYifQ.eyJzdWIiOiJhcG9ydGFsYWRtaW5AZGVtb2NvbGxlZ2UuZWR1IiwiYXpwIjoiY2xpZW50IiwiZXBwbiI6ImFwb3J0YWxhZG1pbkBkZW1vY29sbGVnZS5lZHUiLCJzY29wZSI6WyJlcHBuIiwib3BlbmlkIiwicHJvZmlsZSIsImVtYWlsIl0sInJvbGVzIjpbIlJPTEVfREVWRUxPUEVSIiwiUk9MRV9VU0VSIiwic3RhZmYiLCJST0xFX0FETUlOIiwiUk9MRV9VU0VSIl0sImlzcyI6Imh0dHBzOlwvXC9taXRyZS5jdy5hc3R1YXJ0LmNvXC9mXC8iLCJleHAiOjE0ODAzNzg2NzAsIm1pc0NvZGUiOiIwMDAiLCJpYXQiOjE0ODAzNzUwNzAsImp0aSI6IjI2NDlmNWRlLTU4NmItNDRlZC05MDhjLTgyZTE2OTE3MmY1MyJ9.PDnIsGz87ndmc4l6_AWTLH6TLB8_ixo5DMl_axhdI_LWZASNrNlarJ7VvbRJ8vLCnNeGfu-GIGtJlFfsYZ1qKPCyRd3hjCqysc_Ta1zKIJgVoVUyWO4GzmKVQZinYvaLw7iovyObzoDn78SA1BKQkeKCByUsZUebhQUrTAYoj00Klcbfbdr6PdcbQ4ecNeWla8AtejZS5_4OA1d1FmgWopgQguCw6Pp--HCNHw-sY_2kQUWuQqegDBwKJb3NWR2DfhXCmqpfyMbOskUF9hTaBNohYUVElteOa32vRO6brXfQj5qvRMRCqVfneSTp7TmNHBfhuH9TQQ4UZlGXKDux6g"
+        # self.token = "eyJraWQiOiJyc2ExIiwiYWxnIjoiUlMyNTYifQ.eyJzdWIiOiJhcG9ydGFsYWRtaW5AZGVtb2NvbGxlZ2UuZWR1IiwiYXpwIjoiY2xpZW50IiwiZXBwbiI6ImFwb3J0YWxhZG1pbkBkZW1vY29sbGVnZS5lZHUiLCJzY29wZSI6WyJlcHBuIiwib3BlbmlkIiwicHJvZmlsZSIsImVtYWlsIl0sInJvbGVzIjpbIlJPTEVfREVWRUxPUEVSIiwiUk9MRV9VU0VSIiwic3RhZmYiLCJST0xFX0FETUlOIiwiUk9MRV9VU0VSIl0sImlzcyI6Imh0dHBzOlwvXC9taXRyZS5jdy5hc3R1YXJ0LmNvXC9mXC8iLCJleHAiOjE0ODAzNzg2NzAsIm1pc0NvZGUiOiIwMDAiLCJpYXQiOjE0ODAzNzUwNzAsImp0aSI6IjI2NDlmNWRlLTU4NmItNDRlZC05MDhjLTgyZTE2OTE3MmY1MyJ9.PDnIsGz87ndmc4l6_AWTLH6TLB8_ixo5DMl_axhdI_LWZASNrNlarJ7VvbRJ8vLCnNeGfu-GIGtJlFfsYZ1qKPCyRd3hjCqysc_Ta1zKIJgVoVUyWO4GzmKVQZinYvaLw7iovyObzoDn78SA1BKQkeKCByUsZUebhQUrTAYoj00Klcbfbdr6PdcbQ4ecNeWla8AtejZS5_4OA1d1FmgWopgQguCw6Pp--HCNHw-sY_2kQUWuQqegDBwKJb3NWR2DfhXCmqpfyMbOskUF9hTaBNohYUVElteOa32vRO6brXfQj5qvRMRCqVfneSTp7TmNHBfhuH9TQQ4UZlGXKDux6g"
 
     @task
     def main(self):
