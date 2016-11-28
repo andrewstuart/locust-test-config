@@ -1,6 +1,7 @@
 import uuid
 from locust import HttpLocust, TaskSet, task
 import time
+import jwt
 
 def strTimeProp(start, end, format, prop):
     """Get a time at a proportion of a range of two formatted times.
@@ -29,15 +30,20 @@ class MetricsTaskSet(TaskSet):
     token = None
 
     def auth_get(self, *args, **kwargs):
-        try:
-            if kwargs['headers'] is None:
-                kwargs['headers'] = {}
-        except KeyError:
-            kwargs['headers'] = {}
+        if self.token is not None:
+            try:
+                jwt.decode(self.token)
 
-        bearer = 'Bearer {}'.format(self.token)
-        kwargs['headers']['Authorization'] = bearer
-        print(bearer)
+                try:
+                    if kwargs['headers'] is None:
+                        kwargs['headers'] = {}
+                except KeyError:
+                    kwargs['headers'] = {}
+
+                bearer = 'Bearer {}'.format(self.token)
+                kwargs['headers']['Authorization'] = bearer
+            except jwt.ExpiredSignatureError:
+                print("Proceeding with no token. Signature expired.")
 
         self.client.get(*args, **kwargs)
 
