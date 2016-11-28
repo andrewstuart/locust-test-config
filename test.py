@@ -35,8 +35,9 @@ class MetricsTaskSet(TaskSet):
         except KeyError:
             kwargs['headers'] = {}
 
-        kwargs['headers']['Authorization'] = 'Bearer {}'.format(self.token)
-        print(kwargs['Authorization'])
+        bearer = 'Bearer {}'.format(self.token)
+        kwargs['headers']['Authorization'] = bearer
+        print(bearer)
 
         self.client.get(*args, **kwargs)
 
