@@ -5,6 +5,7 @@ import time
 
 def login(l):
     res = l.client.get('https://idp.cw.astuart.co/idp/profile/SAML2/Unsolicited/SSO?providerId=ssp.dev&shire=https://mitre.cw.astuart.co/f/saml/SSO&target=http://portal.cw.astuart.co/uPortal/openid_connect_login?cccMisCode=ZZ1')
+    print(res.content)
 
 def strTimeProp(start, end, format, prop):
     """Get a time at a proportion of a range of two formatted times.
@@ -33,6 +34,7 @@ class MetricsTaskSet(TaskSet):
     def on_start(self):
         self._deviceid = str(uuid.uuid4())
         self.client.verify = False
+        login(self)
 
     def get_some_stories(self):
         count = random.randint(20,60)
