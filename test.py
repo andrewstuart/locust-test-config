@@ -1,6 +1,5 @@
 import uuid
 from locust import HttpLocust, TaskSet, task
-import random
 import time
 
 def strTimeProp(start, end, format, prop):
@@ -30,10 +29,14 @@ class MetricsTaskSet(TaskSet):
     token = None
 
     def auth_get(self, *args, **kwargs):
-        if kwargs['headers'] is None:
+        try:
+            if kwargs['headers'] is None:
+                kwargs['headers'] = {}
+        except KeyError:
             kwargs['headers'] = {}
 
         kwargs['headers']['Authorization'] = 'Bearer {}'.format(self.token)
+        print(kwargs['Authorization'])
 
         self.client.get(*args, **kwargs)
 
