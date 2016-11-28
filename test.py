@@ -3,10 +3,6 @@ from locust import HttpLocust, TaskSet, task
 import random
 import time
 
-def login(l):
-    res = l.client.get('https://idp.cw.astuart.co/idp/profile/SAML2/Unsolicited/SSO?providerId=ssp.dev&shire=https://mitre.cw.astuart.co/f/saml/SSO&target=http://portal.cw.astuart.co/uPortal/openid_connect_login?cccMisCode=ZZ1')
-    print(res.content)
-
 def strTimeProp(start, end, format, prop):
     """Get a time at a proportion of a range of two formatted times.
 
@@ -31,23 +27,29 @@ def randomDate(start, end, prop):
 class MetricsTaskSet(TaskSet):
     _deviceid = None
 
+    token = None
+
+    def auth_get(self, *args, **kwargs):
+        if kwargs['headers'] is None:
+            kwargs['headers'] = {}
+
+        kwargs['headers']['Authorization'] = 'Bearer {}'.format(self.token)
+
+        self.client.get(*args, **kwargs)
+
     def on_start(self):
         self._deviceid = str(uuid.uuid4())
         self.client.verify = False
-        login(self)
 
-    def get_some_stories(self):
-        count = random.randint(20,60)
-        date = randomDate('9/24/2016 12:00 AM', '11/24/2016 12:00 AM', random.random())
-        self.client.get('/api/v1/stories?count={}&date={}'.format(count, date))
+        self.token = "eyJraWQiOiJyc2ExIiwiYWxnIjoiUlMyNTYifQ.eyJzdWIiOiJhcG9ydGFsYWRtaW5AZGVtb2NvbGxlZ2UuZWR1IiwiYXpwIjoiY2xpZW50IiwiZXBwbiI6ImFwb3J0YWxhZG1pbkBkZW1vY29sbGVnZS5lZHUiLCJzY29wZSI6WyJlcHBuIiwib3BlbmlkIiwicHJvZmlsZSIsImVtYWlsIl0sInJvbGVzIjpbIlJPTEVfREVWRUxPUEVSIiwiUk9MRV9VU0VSIiwic3RhZmYiLCJST0xFX0FETUlOIiwiUk9MRV9VU0VSIl0sImlzcyI6Imh0dHBzOlwvXC9taXRyZS5jdy5hc3R1YXJ0LmNvXC9mXC8iLCJleHAiOjE0ODAzNzg2NzAsIm1pc0NvZGUiOiIwMDAiLCJpYXQiOjE0ODAzNzUwNzAsImp0aSI6IjI2NDlmNWRlLTU4NmItNDRlZC05MDhjLTgyZTE2OTE3MmY1MyJ9.PDnIsGz87ndmc4l6_AWTLH6TLB8_ixo5DMl_axhdI_LWZASNrNlarJ7VvbRJ8vLCnNeGfu-GIGtJlFfsYZ1qKPCyRd3hjCqysc_Ta1zKIJgVoVUyWO4GzmKVQZinYvaLw7iovyObzoDn78SA1BKQkeKCByUsZUebhQUrTAYoj00Klcbfbdr6PdcbQ4ecNeWla8AtejZS5_4OA1d1FmgWopgQguCw6Pp--HCNHw-sY_2kQUWuQqegDBwKJb3NWR2DfhXCmqpfyMbOskUF9hTaBNohYUVElteOa32vRO6brXfQj5qvRMRCqVfneSTp7TmNHBfhuH9TQQ4UZlGXKDux6g"
 
     @task
     def main(self):
-        self.client.get('/api/version/')
+        self.auth_get('/api/version/')
 
     @task(10)
     def portlet_list(self):
-        self.client.get('/api/portletListForSearch')
+        self.auth_get('/api/portletListForSearch')
 
     # @task
     # def rest_stories(self):
@@ -55,11 +57,11 @@ class MetricsTaskSet(TaskSet):
 
     @task(10)
     def home_page(self):
-        self.client.get('/')
+        self.auth_get('/')
 
     @task(20)
     def guest_page(self):
-        self.client.get('/f/u27l1s1000/normal/render.uP')
+        self.auth_get('/f/u27l1s1000/normal/render.uP')
 
     # @task(5)
     # def get_login_page(self):
