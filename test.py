@@ -52,19 +52,19 @@ class MetricsTaskSet(TaskSet):
     def main(self):
         self.auth_get('/api/version/')
 
-    # @task(10)
-    # def portlet_list(self):
-    #     self.auth_get('/api/portletListForSearch')
+    @task
+    def portlet_list(self):
+        self.auth_get('/api/portletListForSearch')
 
     # @task
     # def rest_stories(self):
     #     self.client.get('/f/u27l1s1000/p/cvc.u27l1n22101/exclusive/render.uP')
 
-    @task(10)
+    @task
     def home_page(self):
         self.auth_get('/')
 
-    @task(20)
+    @task(2)
     def guest_page(self):
         self.auth_get('/f/u27l1s1000/normal/render.uP')
 
