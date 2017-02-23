@@ -61,7 +61,7 @@ class MetricsTaskSet(TaskSet):
 
     @task(10)
     def rest_user_info(self):
-        self.auth_get('api/v4-3/people/me')
+        self.auth_get('api/v4-3/people/me/')
 
     @task(10)
     def rest_rest_urls(self):
