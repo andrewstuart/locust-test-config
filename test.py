@@ -46,15 +46,16 @@ class MetricsTaskSet(TaskSet):
         self._deviceid = str(uuid.uuid4())
         self.client.verify = False
 
-        # self.token = "eyJraWQiOiJyc2ExIiwiYWxnIjoiUlMyNTYifQ.eyJzdWIiOiJhcG9ydGFsYWRtaW5AZGVtb2NvbGxlZ2UuZWR1IiwiYXpwIjoiY2xpZW50IiwiZXBwbiI6ImFwb3J0YWxhZG1pbkBkZW1vY29sbGVnZS5lZHUiLCJzY29wZSI6WyJlcHBuIiwib3BlbmlkIiwicHJvZmlsZSIsImVtYWlsIl0sInJvbGVzIjpbIlJPTEVfREVWRUxPUEVSIiwiUk9MRV9VU0VSIiwic3RhZmYiLCJST0xFX0FETUlOIiwiUk9MRV9VU0VSIl0sImlzcyI6Imh0dHBzOlwvXC9taXRyZS5jdy5hc3R1YXJ0LmNvXC9mXC8iLCJleHAiOjE0ODAzNzg2NzAsIm1pc0NvZGUiOiIwMDAiLCJpYXQiOjE0ODAzNzUwNzAsImp0aSI6IjI2NDlmNWRlLTU4NmItNDRlZC05MDhjLTgyZTE2OTE3MmY1MyJ9.PDnIsGz87ndmc4l6_AWTLH6TLB8_ixo5DMl_axhdI_LWZASNrNlarJ7VvbRJ8vLCnNeGfu-GIGtJlFfsYZ1qKPCyRd3hjCqysc_Ta1zKIJgVoVUyWO4GzmKVQZinYvaLw7iovyObzoDn78SA1BKQkeKCByUsZUebhQUrTAYoj00Klcbfbdr6PdcbQ4ecNeWla8AtejZS5_4OA1d1FmgWopgQguCw6Pp--HCNHw-sY_2kQUWuQqegDBwKJb3NWR2DfhXCmqpfyMbOskUF9hTaBNohYUVElteOa32vRO6brXfQj5qvRMRCqVfneSTp7TmNHBfhuH9TQQ4UZlGXKDux6g"
+        res = self.client.post('http://mitreid-server/f/token?client_id=client&client_secret=secret&scope=superuser&grant_type=client_credentials&response_type=token').json()
+        self.token = res['access_token']
 
-    @task
+    @task(5)
     def main(self):
         self.auth_get('/api/version/')
 
-    @task
-    def portlet_list(self):
-        self.auth_get('/api/portletListForSearch')
+    # @task
+    # def portlet_list(self):
+    #     self.auth_get('/api/portletListForSearch')
 
     # @task
     # def rest_stories(self):
@@ -74,5 +75,5 @@ class MetricsTaskSet(TaskSet):
 
 class MetricsLocust(HttpLocust):
     task_set = MetricsTaskSet
-    min_wait=10
-    max_wait=50
+    min_wait=50
+    max_wait=500
