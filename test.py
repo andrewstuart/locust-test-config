@@ -39,6 +39,7 @@ class MetricsTaskSet(TaskSet):
 
             bearer = 'Bearer {}'.format(self.token)
             kwargs['headers']['Authorization'] = bearer
+            print('Using bearer token: {}'.format(bearer))
 
         self.client.get(*args, **kwargs)
 
@@ -47,7 +48,7 @@ class MetricsTaskSet(TaskSet):
         self.client.verify = False
 
         res = self.client.post('http://mitreid-server/f/token?client_id=client&client_secret=secret&scope=superuser&grant_type=client_credentials&response_type=token')
-        print(res.status_code)
+        print('Status code: {}'.format(res.status_code))
         self.token = res.json()['access_token']
 
     @task(5)
