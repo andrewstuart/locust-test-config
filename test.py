@@ -59,9 +59,9 @@ class MetricsTaskSet(TaskSet):
     def rest_stories(self):
         self.auth_get('/f/u27l1s1000/p/cvc.u27l1n22101/exclusive/render.uP')
 
-    @task(10)
-    def rest_user_info(self):
-        self.auth_get('api/v4-3/people/me/')
+#     @task(10)
+#     def rest_user_info(self):
+#         self.auth_get('api/v4-3/people/me/')
 
     @task(10)
     def rest_rest_urls(self):
