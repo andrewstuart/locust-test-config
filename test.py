@@ -51,31 +51,27 @@ class MetricsTaskSet(TaskSet):
         print('Status code: {}'.format(res.status_code))
         self.token = res.json()['access_token']
 
-    @task(5)
-    def main(self):
-        self.auth_get('/api/version/')
-
-    # @task
-    # def portlet_list(self):
-    #     self.auth_get('/api/portletListForSearch')
-
     @task
+    def portlet_list(self):
+        self.auth_get('/api/portletListForSearch')
+
+    @task(10)
     def rest_stories(self):
         self.auth_get('/f/u27l1s1000/p/cvc.u27l1n22101/exclusive/render.uP')
 
-    @task
+    @task(10)
     def rest_user_info(self):
         self.auth_get('api/v4-3/people/me')
 
-    @task
+    @task(10)
     def rest_rest_urls(self):
         self.auth_get('/api/cccRestUrls/')
 
-    @task
+    @task(10)
     def home_page(self):
         self.auth_get('/')
 
-    @task
+    @task(10)
     def guest_page(self):
         self.client.get('/f/u27l1s1000/normal/render.uP')
 
