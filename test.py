@@ -46,8 +46,9 @@ class MetricsTaskSet(TaskSet):
         self._deviceid = str(uuid.uuid4())
         self.client.verify = False
 
-        res = self.client.post('http://mitreid-server/f/token?client_id=client&client_secret=secret&scope=superuser&grant_type=client_credentials&response_type=token').json()
-        self.token = res['access_token']
+        res = self.client.post('http://mitreid-server/f/token?client_id=client&client_secret=secret&scope=superuser&grant_type=client_credentials&response_type=token')
+        print res.status_code
+        self.token = res.json()['access_token']
 
     @task(5)
     def main(self):
