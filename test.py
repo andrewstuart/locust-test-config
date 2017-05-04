@@ -51,13 +51,13 @@ class MetricsTaskSet(TaskSet):
         print('Status code: {}'.format(res.status_code))
         self.token = res.json()['access_token']
 
-    @task
+    @task(1)
     def portlet_list(self):
-        self.auth_get('/api/portletListForSearch')
+        self.auth_get('/uPortal/api/portletListForSearch')
 
     @task(10)
     def rest_stories(self):
-        self.auth_get('/f/u27l1s1000/p/cvc.u27l1n22101/exclusive/render.uP')
+        self.auth_get('/uPortal/f/u27l1s1000/p/cvc.u27l1n22101/exclusive/render.uP')
 
 #     @task(10)
 #     def rest_user_info(self):
@@ -65,19 +65,19 @@ class MetricsTaskSet(TaskSet):
 
     @task(10)
     def rest_rest_urls(self):
-        self.auth_get('/api/cccRestUrls/')
+        self.auth_get('/uPortal/api/cccRestUrls/')
 
     @task(10)
     def home_page(self):
-        self.auth_get('/')
+        self.auth_get('/uPortal/')
 
     @task(10)
     def guest_page(self):
-        self.client.get('/f/u27l1s1000/normal/render.uP')
+        self.client.get('/uPortal/f/u27l1s1000/normal/render.uP')
 
-    # @task(5)
-    # def get_login_page(self):
-    #     self.client.get('/openid_connect_login')
+    @task(10)
+    def advisor_cards(self):
+        self.client.get('/advisorcard/api/v1/advisorcards/mine')
 
 class MetricsLocust(HttpLocust):
     task_set = MetricsTaskSet
