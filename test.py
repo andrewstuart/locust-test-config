@@ -27,7 +27,7 @@ def randomDate(start, end, prop):
 misCodes = ["ZZ1", "ZZ2"]
 
 for i in range(200, 399):
-    misCodes.append('test_{num:03d}'.format(num=i))
+    misCodes.append('{num:03d}'.format(num=i))
 
 def randomMIS():
     return misCodes[random.randint(0, len(misCodes)-1)]
@@ -84,7 +84,6 @@ class MetricsTaskSet(TaskSet):
     @task(10)
     def advisor_cards(self):
         mis = randomMIS()
-        print(mis)
         self.auth_get('/advisorcard/api/v1/advisorcards?misCode=' + mis, name='/advisorcard/api/v1/advisorcards?misCode=[]')
 
 class MetricsLocust(HttpLocust):
