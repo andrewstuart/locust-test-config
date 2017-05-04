@@ -27,7 +27,7 @@ def randomDate(start, end, prop):
 misCodes = ["ZZ1", "ZZ2"]
 
 for i in range(200, 399):
-    misCodes.append('test_%03d'.format(i))
+    misCodes.append('test_{num:03d}'.format(num=i))
 
 def randomMIS():
     return misCodes[random.randint(0, len(misCodes)-1)]
