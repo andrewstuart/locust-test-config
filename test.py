@@ -1,6 +1,7 @@
 import uuid
 from locust import HttpLocust, TaskSet, task
 import time
+import random
 # import jwt
 
 def strTimeProp(start, end, format, prop):
@@ -23,6 +24,13 @@ def strTimeProp(start, end, format, prop):
 def randomDate(start, end, prop):
     return strTimeProp(start, end, '%m/%d/%Y %I:%M %p', prop)
 
+misCodes = ["ZZ1", "ZZ2"]
+
+for i in range(200, 399):
+    misCodes.append('test_%03d'.format(i))
+
+def randomMIS():
+    return misCodes[random.randint(0, len(misCodes)-1)]
 
 class MetricsTaskSet(TaskSet):
     _deviceid = None
@@ -77,7 +85,7 @@ class MetricsTaskSet(TaskSet):
 
     @task(10)
     def advisor_cards(self):
-        self.client.get('/advisorcard/api/v1/advisorcards')
+        self.client.get('/advisorcard/api/v1/advisorcards?misCode=%s'.format(randomMIS()))
 
 class MetricsLocust(HttpLocust):
     task_set = MetricsTaskSet
