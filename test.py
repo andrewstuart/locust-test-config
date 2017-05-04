@@ -83,7 +83,9 @@ class MetricsTaskSet(TaskSet):
 
     @task(10)
     def advisor_cards(self):
-        self.client.get('/advisorcard/api/v1/advisorcards?misCode=%s'.format(randomMIS()))
+        mis = randomMIS()
+        print(mis)
+        self.client.get('/advisorcard/api/v1/advisorcards?misCode=' + mis)
 
 class MetricsLocust(HttpLocust):
     task_set = MetricsTaskSet
