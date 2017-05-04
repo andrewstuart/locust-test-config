@@ -85,7 +85,7 @@ class MetricsTaskSet(TaskSet):
     def advisor_cards(self):
         mis = randomMIS()
         print(mis)
-        self.auth_get('/advisorcard/api/v1/advisorcards?misCode=' + mis)
+        self.auth_get('/advisorcard/api/v1/advisorcards?misCode=' + mis, name='/advisorcard/api/v1/advisorcards?misCode=[]')
 
 class MetricsLocust(HttpLocust):
     task_set = MetricsTaskSet
