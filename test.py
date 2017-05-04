@@ -77,7 +77,7 @@ class MetricsTaskSet(TaskSet):
 
     @task(10)
     def advisor_cards(self):
-        self.client.get('/advisorcard/api/v1/advisorcards/mine')
+        self.client.get('/advisorcard/api/v1/advisorcards')
 
 class MetricsLocust(HttpLocust):
     task_set = MetricsTaskSet
