@@ -54,7 +54,7 @@ class MetricsTaskSet(TaskSet):
         self._deviceid = str(uuid.uuid4())
         self.client.verify = False
 
-        res = self.client.post('https://login.ci.portal.ccctcportal.org/f/token?client_id=client&client_secret=secret&scope=superuser&grant_type=client_credentials&response_type=token')
+        res = self.client.post('https://login.ci.portal.ccctcportal.org/f/token?client_id=client&client_secret=secret2&scope=superuser&grant_type=client_credentials&response_type=token')
         self.token = res.json()['access_token']
 
     @task(1)
